@@ -47,9 +47,10 @@
 /*  ------------   Sheldure table styles */
 
 .sheldure-table {
-    margin: 10px 0px;
+    margin: 10px auto;
     color: black;
     width: 100%;
+    max-width: 1000px;
     border-collapse: collapse;
 }
 
@@ -72,20 +73,31 @@
     width: 200px;
 }
 
+.sheldure-table tr:not(:first-child) td:hover {
+    background-color: #dbeaff;
+}
+
 .sheldure-table tr:not(:first-child) {
     height: 90px;
 }
 
 .table-header-row td:first-child {
-    width: 50px;
+    width: 40px;
 }
 
-.sheldure-subject-number{
+.sheldure-subject-number {
     font-weight: 600;
-    text-align: center; 
+    text-align: center;
+    user-select: none;
 }
 
 .sheldure-subject-time {
     font-weight: 400;
     color: #808080;
+    user-select: none;
+    font-size: 10pt;
+}
+
+.current-day {
+    background-color: #dee0a6;
 }

@@ -19,8 +19,33 @@ export const Sheldure = (props) => {
         ["18:50", "-", "19:10"],
     ];
 
+
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+    let currentTimeRange = 0;
+
+    for (const timeRange of subjectTimes) {
+        const startHourMinute = timeRange[0].split(':');
+        const startHour = parseInt(startHourMinute[0]);
+        const startMinute = parseInt(startHourMinute[1]);
+        const startRangeInMinutes = startHour * 60 + startMinute;
+
+        const endHourMinute = timeRange[2].split(':');
+        const endHour = parseInt(endHourMinute[0]);
+        const endMinute = parseInt(endHourMinute[1]);
+        const endRangeInMinutes = endHour * 60 + endMinute;
+
+        if (currentTimeInMinutes >= startRangeInMinutes && currentTimeInMinutes <= endRangeInMinutes)
+            break;
+        currentTimeRange = currentTimeRange + 1;
+    }
+
     const [isLoading, setIsLoading] = useState(false);
     const currentDate = new Date();
+    const dayOfWeekNumber = currentDate.getDay();
 
 
 
@@ -82,7 +107,8 @@ export const Sheldure = (props) => {
                             <span className="sheldure-subject-time">{subjectTimes[rowNumber - 1]}</span>
                         </td>
                         {cols.map(colNumber => (
-                            <td key={`${rowNumber}-${colNumber}`}>
+                            <td key={`${rowNumber}-${colNumber}`} className={(dayOfWeekNumber == (colNumber - 1)) && (currentTimeRange == (rowNumber-1)) ? "current-day" : ""}>
+
                                 <Subject
                                     name={`Subject ${rowNumber}-${colNumber}`}
                                     type="subject type"
