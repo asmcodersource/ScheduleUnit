@@ -2,8 +2,14 @@
     padding: 10px 50px;
 }
 
-/*  ------------   Sheldure informations styles */
+.loading-message{
+    font-size: 26pt;
+    color: black;
+    margin: auto 45%;
+    padding: 40px 0px;
+}
 
+/*  ------------   Sheldure informations styles */
 .sheldure-info {
     color: black;
     text-align: center;

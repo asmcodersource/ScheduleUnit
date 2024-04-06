@@ -1,0 +1,11 @@
+.duplex-subject-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.duplex-separator {
+    margin: 0px;
+    height: 1px;
+    border: 0px;
+    background-color: #9db8e3;
+}

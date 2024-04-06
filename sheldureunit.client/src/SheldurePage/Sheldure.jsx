@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import './Sheldure.css';
 import Subject from './Subject'
+import DuplexSubject from './DuplexSubject';
 
 
 export const Sheldure = (props) => {
     const rows = Array.from({ length: 7 }, (v, i) => i + 1);
+    const cols = Array.from({ length: 5 }, (v, i) => i + 1);
 
     const subjectTimes = [
         ["9:00","-", "10:20"],
@@ -17,8 +19,10 @@ export const Sheldure = (props) => {
         ["18:50", "-", "19:10"],
     ];
 
-
+    const [isLoading, setIsLoading] = useState(false);
     const currentDate = new Date();
+
+
 
     /*
     const months = [
@@ -44,6 +48,9 @@ export const Sheldure = (props) => {
 
     const formattedDate = `${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
 
+    if (isLoading) {
+        return (<div className="loading-message">Loading...</div>)
+    }
 
     return (
         <div className="sheldure-page-wrapper" >
@@ -72,23 +79,17 @@ export const Sheldure = (props) => {
                         <td className="sheldure-subject-number">
                             {rowNumber}
                             <br></br>
-                            <span className="sheldure-subject-time">{subjectTimes[rowNumber-1]}</span>
+                            <span className="sheldure-subject-time">{subjectTimes[rowNumber - 1]}</span>
                         </td>
-                        <td>
-                            <Subject name="Subject name" type="subject type" class="auditory" />
-                        </td>
-                        <td>
-                            <Subject name="Subject name" type="subject type" class="auditory" />
-                        </td>
-                        <td>
-                            <Subject name="Subject name" type="subject type" class="auditory" />
-                        </td>
-                        <td>
-                            <Subject name="Subject name" type="subject type" class="auditory" />
-                        </td>
-                        <td>
-                            <Subject name="Subject name" type="subject type" class="auditory" />
-                        </td>
+                        {cols.map(colNumber => (
+                            <td key={`${rowNumber}-${colNumber}`}>
+                                <Subject
+                                    name={`Subject ${rowNumber}-${colNumber}`}
+                                    type="subject type"
+                                    class="auditory"
+                                />
+                            </td>
+                        ))}
                     </tr>
                 ))}
             </table>
