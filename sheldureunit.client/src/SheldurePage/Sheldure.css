@@ -1,0 +1,85 @@
+.sheldure-page-wrapper{
+    padding: 10px 50px;
+}
+
+/*  ------------   Sheldure informations styles */
+
+.sheldure-info {
+    color: black;
+    text-align: center;
+}
+
+.info-name-header {
+    margin: 0px;
+    font-size: 14pt;
+}
+
+.info-group-name {
+    margin: 0px;
+    font-size: 14pt;
+    font-weight: 500;
+}
+
+.info-sheldure-name {
+    margin: 0px;
+    font-size: 14pt;
+    font-weight: 500;
+}
+
+.info-sheldure-duration {
+    margin: 0px;
+    font-size: 12pt;
+    font-weight: 400;
+}
+
+.info-current-date {
+    margin: 0px;
+    font-size: 12pt;
+    font-weight: 400;
+}
+
+/*  ------------   Sheldure table styles */
+
+.sheldure-table {
+    margin: 10px 0px;
+    color: black;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sheldure-table td, tr {
+    text-align: center;
+    border: 1px solid #9db8e3;
+}
+
+.table-header-row {
+    height: 30px !important;
+    background-color: #d2ebfa;
+    text-align: center;
+    text-shadow: -1px 1px 1px 1px black;
+    font-weight: 650;
+    color: black;
+}
+
+
+.table-header-row td {
+    width: 200px;
+}
+
+.sheldure-table tr:not(:first-child) {
+    height: 90px;
+}
+
+.table-header-row td:first-child {
+    width: 50px;
+}
+
+.sheldure-subject-number{
+    font-weight: 600;
+    text-align: center; 
+}
+
+.sheldure-subject-time {
+    font-weight: 400;
+    color: #808080;
+}

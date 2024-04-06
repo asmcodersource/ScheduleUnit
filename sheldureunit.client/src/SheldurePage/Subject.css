@@ -1,0 +1,23 @@
+.subject-wrapper{
+    color: black;
+    margin: 5px 0px;
+    font-size: 12pt;
+}
+
+.subject-name {
+    color: #3966aa;
+    margin: 1px 0px;
+    font-size: 12pt;
+}
+
+.subject-type {
+    font-size: 10pt;
+    color: #808080;
+    margin: 1px 0px;
+}
+
+.subject-class {
+    font-size: 10pt;
+    color: #808080;
+    margin: 1px 0px;
+}
