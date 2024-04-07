@@ -5,36 +5,32 @@ namespace SheldureUnit.Server.Data
 {
     public enum Day
     {
-        Mondey,
-        Tuesday, 
-        Wednesday, 
+        Monday,
+        Tuesday,
+        Wednesday,
         Thursday,
         Friday,
     }
 
     public class Lesson
     {
-        [Key, Required]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required] 
+        [Required]
         public Day Day { get; set; }
         [Required]
         public int Number { get; set; }
 
-        [Required, ForeignKey("Subject")]
-        public int FirstSubjectRefId {  get; set; }
-        [Required]
-        public Subject? FirstSubject { get; set; }
+        [ForeignKey("ClassRoomId")]
+        public int ClassRoomId { get; set; }
+        public ClassRoom ClassRoom { get; set; } // Навигационное свойство
 
-        [Required, ForeignKey("Subject")]
-        public int SecondSubjectRefId { get; set; }
-        [Required]
-        public Subject? SecondSubject { get; set; }
+        [ForeignKey("FirstSubjectId")]
+        public int FirstSubjectId { get; set; }
+        public Subject FirstSubject { get; set; } // Навигационное свойство
 
-        [Required, ForeignKey("ClassRoom")]
-        public int ClassRoomRefId { get; set; }
-        [Required]
-        public ClassRoom? ClassRoom { get; set; }
-
+        [ForeignKey("SecondSubjectId")]
+        public int SecondSubjectId { get; set; }
+        public Subject SecondSubject { get; set; } // Навигационное свойство
     }
 }
