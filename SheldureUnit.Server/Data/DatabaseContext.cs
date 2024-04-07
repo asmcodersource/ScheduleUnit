@@ -6,7 +6,7 @@ namespace SheldureUnit.Server.Data
     {
         public DbSet<Schedule> Schedules { get; set; } = null!;
         public DbSet<Subject> Subjects { get; set; } = null!;
-        public DbSet<ClassRoom> Classrooms { get; set; } = null!;
+        public DbSet<ClassRoom> ClassRooms { get; set; } = null!;
         public DbSet<Lesson> Lessons { get; set; } = null!;
 
 
@@ -17,51 +17,43 @@ namespace SheldureUnit.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Lesson>()
-                .HasOne(l => l.ClassRoom)
-                .WithMany(c => c.Lessons)
-                .HasForeignKey(l => l.ClassRoomId);
-
-            modelBuilder.Entity<Lesson>()
-                .HasOne(l => l.FirstSubject)
-                .WithMany(s => s.FirstSubjectLessons) // используем первое навигационное свойство
-                .HasForeignKey(l => l.FirstSubjectId);
-
-            modelBuilder.Entity<Lesson>()
-                .HasOne(l => l.SecondSubject)
-                .WithMany(s => s.SecondSubjectLessons) // используем второе навигационное свойство
-                .HasForeignKey(l => l.SecondSubjectId);
-
-            modelBuilder.Entity<Schedule>()
-                .HasMany(s => s.Subjects)
-                .WithOne()
-                .HasForeignKey("ScheduleId"); // Связь один ко многим без навигационного свойства
-
-            base.OnModelCreating(modelBuilder);
-
-
-            modelBuilder.Entity<Subject>().HasData(
-                new Subject { Id = 1, SubjectName = "Mathematics", SubjectDescription = "Study of numbers and shapes" },
-                new Subject { Id = 2, SubjectName = "Physics", SubjectDescription = "Study of matter, energy, and the fundamental forces of nature" },
-                new Subject { Id = 3, SubjectName = "Chemistry", SubjectDescription = "Study of the properties, composition, and behavior of matter" }
-            );
-
+            // Генерация тестовых данных для ClassRoom
             modelBuilder.Entity<ClassRoom>().HasData(
-                new ClassRoom { Id = 1, Name = "Classroom 101", Description = "Standard classroom" }
+                new ClassRoom { Id = 1, Name = "Classroom 101", Description = "Description for Classroom 101" },
+                new ClassRoom { Id = 2, Name = "Classroom 102", Description = "Description for Classroom 102" },
+                new ClassRoom { Id = 3, Name = "Classroom 103", Description = "Description for Classroom 103" }
+            // Добавьте столько объектов ClassRoom, сколько вам нужно
             );
 
+            // Генерация тестовых данных для Subject
+            modelBuilder.Entity<Subject>().HasData(
+                new Subject { Id = 1, SubjectName = "Mathematics", SubjectDescription = "Description for Mathematics" },
+                new Subject { Id = 2, SubjectName = "Science", SubjectDescription = "Description for Science" },
+                new Subject { Id = 3, SubjectName = "History", SubjectDescription = "Description for History" },
+                new Subject { Id = 4, SubjectName = "Literature", SubjectDescription = "Description for Literature" }
+            // Добавьте столько объектов Subject, сколько вам нужно
+            );
+
+            // Генерация тестовых данных для Schedule
             modelBuilder.Entity<Schedule>().HasData(
-                new Schedule { Id = 1, Group = "Group 1", Name = "Spring Semester", Duration = "3 months" }
+                new Schedule { Id = 1, Group = "Group A", Name = "Schedule for Group A", Duration = "1 hour" }
+            // Добавьте столько объектов Schedule, сколько вам нужно
             );
 
+            // Генерация тестовых данных для Lesson
             modelBuilder.Entity<Lesson>().HasData(
-                new Lesson { Id = 1, Day = Day.Monday, Number = 1, ClassRoomId = 1, FirstSubjectId = 1, SecondSubjectId = 2 },
-                new Lesson { Id = 2, Day = Day.Tuesday, Number = 2, ClassRoomId = 1, FirstSubjectId = 2, SecondSubjectId = 3 },
-                new Lesson { Id = 3, Day = Day.Wednesday, Number = 3, ClassRoomId = 1, FirstSubjectId = 3, SecondSubjectId = 1 },
-                new Lesson { Id = 4, Day = Day.Thursday, Number = 4, ClassRoomId = 1, FirstSubjectId = 1, SecondSubjectId = 2 },
-                new Lesson { Id = 5, Day = Day.Friday, Number = 5, ClassRoomId = 1, FirstSubjectId = 2, SecondSubjectId = 3 }
+                // Уроки для первой группы
+                new Lesson { Id = 1, Day = Day.Monday, Number = 1, FirstSubjectId = 1, FirstClassRoomId = 1, FirstLessonType = "Lecture", ScheduleId = 1 },
+                new Lesson { Id = 2, Day = Day.Monday, Number = 2, FirstSubjectId = 2, FirstClassRoomId = 2, FirstLessonType = "Lab", ScheduleId = 1 },
+                new Lesson { Id = 3, Day = Day.Tuesday, Number = 1, FirstSubjectId = 3, FirstClassRoomId = 3, FirstLessonType = "Lecture", ScheduleId = 1 },
+                new Lesson { Id = 4, Day = Day.Tuesday, Number = 2, FirstSubjectId = 4, FirstClassRoomId = 1, FirstLessonType = "Lab", ScheduleId = 1 },
+                // Уроки с двумя предметами
+                new Lesson { Id = 5, Day = Day.Wednesday, Number = 1, FirstSubjectId = 1, SecondSubjectId = 2, FirstClassRoomId = 2, SecondClassRoomId = 3, FirstLessonType = "Lab", SecondLessonType = "Lecture", ScheduleId = 1 },
+                new Lesson { Id = 6, Day = Day.Wednesday, Number = 2, FirstSubjectId = 3, SecondSubjectId = 4, FirstClassRoomId = 3, SecondClassRoomId = 1, FirstLessonType = "Lecture", SecondLessonType = "Lab", ScheduleId = 1 }
+            // Добавьте столько объектов Lesson, сколько вам нужно
             );
         }
+
 
     }
 }

@@ -12,6 +12,5 @@ namespace SheldureUnit.Server.Data
         public string Name { get; set; }
         public string? Description { get; set; }
 
-        public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>(); // Навигационное свойство
     }
 }

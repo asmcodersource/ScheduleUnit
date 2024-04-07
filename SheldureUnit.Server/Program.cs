@@ -1,4 +1,5 @@
 using SheldureUnit.Server.Data;
+using SheldureUnit.Server.Middlewares;
 using Microsoft.EntityFrameworkCore;
 
 string connectionString = "Server=localhost;Database=ScheduleUnit;Uid=admin;Pwd=123123;";
@@ -20,5 +21,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ScheldureFetchMiddleware>();
 app.MapFallbackToFile("/index.html");
 app.Run();

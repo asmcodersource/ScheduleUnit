@@ -43,9 +43,13 @@ export const Sheldure = (props) => {
         currentTimeRange = currentTimeRange + 1;
     }
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [groupName, setGroupName] = useState("");
+    const [schelduleName, setSchelduleName] = useState("");
+    const [schelduleDuration, setSchelduleDuration] = useState("");
+    const [scheduleData, setScheduleData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const currentDate = new Date();
-    const dayOfWeekNumber = currentDate.getDay();
+    const dayOfWeekNumber = currentDate.getDay() - 1;
 
 
 
@@ -73,6 +77,39 @@ export const Sheldure = (props) => {
 
     const formattedDate = `${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
 
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            const url = '/fetchScheldule';
+            const requestData = { group: 'Group A' };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ошибка запроса: ' + response.statusText);
+                }
+
+                const responseData = await response.json();
+                setGroupName(responseData["Group"])
+                setSchelduleName(responseData["Name"])
+                setSchelduleDuration(responseData["Duration"])  
+                setScheduleData(formatScheduleData(responseData));
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Ошибка при получении данных:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     if (isLoading) {
         return (<div className="loading-message">Loading...</div>)
     }
@@ -82,10 +119,10 @@ export const Sheldure = (props) => {
             <div className="sheldure-info">
                 <h1 className="info-name-header">Sheldure</h1>
                 <br />
-                <h2 className="info-group-name">Group name</h2>
+                <h2 className="info-group-name">{groupName}</h2>
                 <br />
-                <h2 className="info-sheldure-name">Sheldure name</h2>
-                <h3 className="info-sheldure-duration">Sheldure duration</h3>
+                <h2 className="info-sheldure-name">{schelduleName}</h2>
+                <h3 className="info-sheldure-duration">{schelduleDuration}</h3>
                 <h3 className="info-current-date">Today: {formattedDate}, {weekName} week </h3>
             </div>
 
@@ -99,31 +136,71 @@ export const Sheldure = (props) => {
                     <td>Friday</td>
                 </tr>
                 
-                {rows.map(rowNumber => (
+                {rows.map((rowNumber, index) => (
                     <tr key={rowNumber}>
                         <td className="sheldure-subject-number">
                             {rowNumber}
-                            <br></br>
-                            <span className="sheldure-subject-time">{subjectTimes[rowNumber - 1]}</span>
+                            <br />
+                            <span className="sheldure-subject-time">{subjectTimes[index][0]} - {subjectTimes[index][2]}</span>
                         </td>
-                        {cols.map(colNumber => (
-                            <td key={`${rowNumber}-${colNumber}`} className={(dayOfWeekNumber == (colNumber - 1)) && (currentTimeRange == (rowNumber-1)) ? "current-day" : ""}>
-
-                                <Subject
-                                    name={`Subject ${rowNumber}-${colNumber}`}
-                                    type="subject type"
-                                    class="auditory"
-                                />
+                        {cols.map((colNumber, colIndex) => (
+                            <td key={`${rowNumber}-${colNumber}`} className={(dayOfWeekNumber === colIndex) && (currentTimeRange === index) ? "current-day" : ""}>
+                                {scheduleData && scheduleData[colIndex] && scheduleData[colIndex][index] && (
+                                    scheduleData[colIndex][index].SecondSubject ? (
+                                        <DuplexSubject
+                                            subject1={{
+                                                name: scheduleData[colIndex][index].FirstSubject.SubjectName,
+                                                type: scheduleData[colIndex][index].FirstLessonType,
+                                                class: scheduleData[colIndex][index].FirstClassRoom.Name
+                                            }}
+                                            subject2={{
+                                                name: scheduleData[colIndex][index].FirstSubject.SubjectName,
+                                                type: scheduleData[colIndex][index].FirstLessonType,
+                                                class: scheduleData[colIndex][index].FirstClassRoom.Name
+                                            }}
+                                        />
+                                    ) : (
+                                            <Subject
+                                                name={scheduleData[colIndex][index].FirstSubject.SubjectName}
+                                                type={scheduleData[colIndex][index].FirstLessonType}
+                                                class={scheduleData[colIndex][index].FirstClassRoom.Name}
+                                        />
+                                    )
+                                )}
                             </td>
                         ))}
                     </tr>
                 ))}
+
+
             </table>
         </div>
     );
 }
 
 
+const formatScheduleData = (scheduleData) => {
+    const formattedData = [];
+
+    scheduleData.Lessons.forEach((lesson) => {
+        const { Day, Number, FirstSubject, SecondSubject, FirstLessonType, SecondLessonType, FirstClassRoom, SecondClassRoom } = lesson;
+
+        if (!formattedData[Day]) {
+            formattedData[Day] = [];
+        }
+
+        formattedData[Day][Number - 1] = {
+            FirstSubject: FirstSubject,
+            SecondSubject: SecondSubject,
+            FirstLessonType: FirstLessonType,
+            SecondLessonType: SecondLessonType,
+            FirstClassRoom: FirstClassRoom,
+            SecondClassRoom: SecondClassRoom,
+        };
+    });
+
+    return formattedData;
+};
 
 export default Sheldure;
 

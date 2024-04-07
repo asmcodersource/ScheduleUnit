@@ -12,7 +12,5 @@ namespace SheldureUnit.Server.Data
         public string SubjectName { get; set; }
         public string? SubjectDescription { get; set; }
 
-        public ICollection<Lesson> FirstSubjectLessons { get; set; } = new List<Lesson>(); // Навигационное свойство для уроков, где этот предмет - первый предмет
-        public ICollection<Lesson> SecondSubjectLessons { get; set; } = new List<Lesson>(); // Навигационное свойство для уроков, где этот предмет - второй предмет
     }
 }

@@ -17,6 +17,6 @@ namespace SheldureUnit.Server.Data
         [Required, StringLength(256)]
         public string Duration { get; set; }
 
-        public ICollection<Subject> Subjects { get; set; } = new List<Subject>(); // Навигационное свойство
+        public ICollection<Lesson> Lessons { get; set; }
     }
 }
