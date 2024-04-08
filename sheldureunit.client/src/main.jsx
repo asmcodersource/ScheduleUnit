@@ -1,11 +1,21 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import Sheldure from './SheldurePage/Sheldure.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Sheldure from './SheldurePage/Sheldure.jsx';
+import LoginPage from './LoginPage/LoginPage.jsx';
+import AdminPanel from './AdminPage/AdminPage.jsx';
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const path = window.location.pathname.slice(1);
 
-        <Sheldure />
+let componentToRender;
+console.log(path);
+if (path.toLowerCase() === 'login') {
+    componentToRender = <LoginPage />;
+} else if (path.toLowerCase() === 'admin') {
+    componentToRender = <AdminPanel />;
+} else if (path.split('/')[0].toLowerCase() === 'schedule' ) {
+    const groupName = path.split('/')[1]; 
+    componentToRender = <Sheldure groupName={decodeURIComponent(groupName)} />;
+}
 
-)
+ReactDOM.createRoot(document.getElementById('root')).render(componentToRender);

@@ -81,7 +81,7 @@ export const Sheldure = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             const url = '/fetchScheldule';
-            const requestData = { group: 'Group A' };
+            const requestData = { group: props.groupName };
 
             try {
                 const response = await fetch(url, {
