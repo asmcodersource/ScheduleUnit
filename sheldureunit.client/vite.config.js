@@ -46,7 +46,15 @@ export default defineConfig({
             '^/fetchScheldule': {
                 target,
                 secure: false
-            }
+            },
+            '^/tokenvalidation': {
+                target,
+                secure: false
+            },
+            '^/login': {
+                target,
+                secure: false
+            },
         },
         port: 5173,
         https: {
