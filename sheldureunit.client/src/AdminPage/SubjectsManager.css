@@ -1,0 +1,118 @@
+.subjects-manager-wrapper {
+    height: 100%;
+    min-height: 100vh;
+}
+
+.subjects-manager-header {
+    height: 101px;
+    width: 100%;
+    border-bottom: 1px solid black;
+    background-color: rgb(195, 197, 200);
+    margin: 0px;
+    padding: 0px;
+}
+
+.content-width-limiter{
+    height: 100%;
+    margin: 0px;
+    padding
+}
+
+.content-width-limiter h1 {
+    width: 100%;
+    margin: 0px;
+    padding-top: 10px;
+    text-align: center;
+    color: #202124;
+    font: small-caps bolder 18px/1 sans-serif;
+}
+
+.content-width-limiter h2 {
+    width: auto;
+    padding: 5px 15px;
+    text-align: left;
+    color: #202124;
+    font: small-caps bold 13px/1 sans-serif;
+}
+
+.subjects-table {
+    width: 100%;
+    height: 100%;
+    color: black;
+    background-color: #abadb0;
+    border-collapse: collapse;
+}
+
+.table-wrapper{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+th {
+    text-align: center;
+    border: 1px solid black;
+    border-top: unset;
+}
+
+
+td, tr{
+    border: 1px solid black;
+    text-align: left;
+    padding: 5px;
+}
+
+tr, th, td{
+    box-sizing:border-box;
+    border-left: unset;
+}
+
+.actionsColumn{
+    width: 150px;
+    text-align: center;
+}
+
+.stretch-row{
+    height: 100%;
+}
+
+.subjects-manager-controls {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 0px;
+    height: 35px;
+    background-color: rgb(195, 197, 200);
+    font: small-caps bolder 24px/1 sans-serif;
+    color: #202124;
+}
+
+
+.subjects-manager-controls button {
+    width: 151px;
+    box-sizing: border-box;
+    border-radius: 0px;
+    border: unset;
+    border-left: 1px solid black;
+}
+
+.subjects-manager-controls input {
+    color: black;
+    font-size: 14pt;
+    font-weight: 500;
+    padding-left: 15px;
+    background-color: unset;
+    border: unset;
+    width: auto;
+    flex-grow: 1;
+}
+
+
+.subjects-manager-controls input:focus {
+    background-color: unset !important;
+    border: unset !important;
+    border-radius: 0px;
+    width: 85%;
+}
+
+

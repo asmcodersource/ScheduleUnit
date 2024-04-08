@@ -81,3 +81,8 @@
     width: 100%;
     color: black;
 }
+
+.login-fields-wrapper input:-webkit-autofill {
+    -webkit-text-fill-color: black;
+    -webkit-box-shadow: 0 0 0px 1000px azure inset;
+}

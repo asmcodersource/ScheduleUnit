@@ -1,4 +1,5 @@
 .page-wrapper {
+    position: relative;
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -9,12 +10,11 @@
     margin: 0px;
     padding: 0px;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    overflow-y: auto;
     position: relative;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
 }
 
 
@@ -23,13 +23,90 @@
     padding: 0px;
     width: 100%;
     height: 100%;
-    color: white;
+    color: black;
     font-weight: 600;
     font-size: 18pt;
-    background-color: black;
+    background-color: #abadb0;
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+.admin-page-menu {
+    position: sticky;
+    top: 0;
+    color: rgb(195, 197, 200);
+    min-width: 250px;
+    max-width: 350px;
+    height: 100%;
+    background-color: #abadb0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(0,0,0,0.9);
+    box-shadow: inset -3px 0px 10px 0px rgba(0,0,0,0.3);
+}
+
+.panel-header h1 {
+    width: 100%;
+    margin: 0px;
+    padding-top: 10px;
+    text-align: center;
+    color: #202124;
+    font: small-caps bolder 18px/1 sans-serif;
+}
+
+.panel-header h2 {
+    width: 100%;
+    margin: 0px;
+    padding: 5px 0px;
+    text-align: center;
+    color: #202124;
+    font: small-caps bold 13px/1 sans-serif;
+}
+
+.panel-header {
+    width: 100%;
+    height: 101px;
+    padding: 0px 0px;
+    margin: 0px;
+    background-color: rgb(195, 197, 200);
+    border-bottom: 1px solid rgba(0,0,0,1.0);
+}
+
+.admin-page-menu button {
+    text-align: left;
+    padding: 10px 15px;
+    border-radius: 0px;
+    border: unset;
+    border-bottom: 1px solid rgba(0,0,0,0.6);
+    background-color: #abadb0;
+    color: #202124;
+    font: small-caps bold 16px/1 sans-serif;
+    cursor: pointer;
+}
+
+
+.admin-page-menu button:hover {
+    background-color: black;
+    color: white;
+}
+
+.admin-page-menu button:active {
+    background-color: white;
+    color: black;
+}
+
+.working-area-wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: #565961;
+    padding: 0px;
+    margin: 0px;
+}
+
+.selected {
+    background-color: black !important;
+    color: white !important;
 }
