@@ -24,8 +24,6 @@ namespace SheldureUnit.Server.Middlewares
                 {
                     var requestBody = await reader.ReadToEndAsync();
                     var requestData = JObject.Parse(requestBody);
-
-                    // Пример запроса к контексту Entity Framework для получения данных
                     var data = dbContext.Schedules.Where<Schedule>((scheldule) => scheldule.Group == requestData["group"].ToString()).FirstOrDefault();
 
                     if (data == null)

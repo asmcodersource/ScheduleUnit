@@ -8,6 +8,7 @@ namespace SheldureUnit.Server.Data
         public DbSet<Subject> Subjects { get; set; } = null!;
         public DbSet<ClassRoom> ClassRooms { get; set; } = null!;
         public DbSet<Lesson> Lessons { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
 
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
