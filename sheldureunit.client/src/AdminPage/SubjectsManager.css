@@ -3,19 +3,28 @@
     min-height: 100vh;
 }
 
+
+.subjects-manager-wrapper button {
+    cursor: pointer;
+}
+
+.subjects-manager-wrapper button:hover {
+    box-shadow: inset 0px 0px 3px 0px black;
+}
+
 .subjects-manager-header {
     height: 101px;
     width: 100%;
     border-bottom: 1px solid black;
-    background-color: rgb(195, 197, 200);
+    background-color: #10151a;
     margin: 0px;
     padding: 0px;
 }
 
+
 .content-width-limiter{
     height: 100%;
     margin: 0px;
-    padding
 }
 
 .content-width-limiter h1 {
@@ -23,24 +32,27 @@
     margin: 0px;
     padding-top: 10px;
     text-align: center;
-    color: #202124;
+    color: #F6F2F6;
     font: small-caps bolder 18px/1 sans-serif;
+    text-shadow: 1px 1px 1px black;
 }
 
 .content-width-limiter h2 {
     width: auto;
-    padding: 5px 15px;
+    padding: 5px 35px;
     text-align: left;
-    color: #202124;
+    color: #F6F2F6;
     font: small-caps bold 13px/1 sans-serif;
+    text-shadow: 1px 1px 1px black;
 }
 
 .subjects-table {
     width: 100%;
     height: 100%;
     color: black;
-    background-color: #abadb0;
+    background-color: #E3E8EB;
     border-collapse: collapse;
+    border-left: 0px solid black;
 }
 
 .table-wrapper{
@@ -54,27 +66,61 @@ th {
     text-align: center;
     border: 1px solid black;
     border-top: unset;
+    color: white;
+    font-weight: 600;
+    background-color: #16354D;
+    text-shadow: 1px 1px 1px black;
 }
 
 
-td, tr{
+.table-wrapper td, .table-wrapper tr {
     border: 1px solid black;
     text-align: left;
     padding: 5px;
 }
 
+.table-wrapper tr:nth-child(odd) {
+    background-color: #d1e0ed;
+}
+
 tr, th, td{
     box-sizing:border-box;
-    border-left: unset;
+    border-left: 0px solid black;
+    font-weight: 600;
 }
 
 .actionsColumn{
     width: 150px;
     text-align: center;
+    padding: 0px !important;
 }
 
-.stretch-row{
+.actionsColumn button {
+    background-color: #E3E8EB;
     height: 100%;
+    border-radius: 0px;
+    border: 0px solid black;
+    width: 50%;
+    margin: 0px;
+    padding: 0px;
+    font-weight: 600;
+}
+
+.actionsColumn .edit-button {
+    background-color: unset;
+    color: #0e7ae6;
+    font-weight: 800;
+}
+
+.actionsColumn .delete-button {
+    background-color: unset;
+    color: #ed1c38;
+    font-weight: 800;
+}
+
+.stretch-row {
+    height: 100%;
+    background-color: #E3E8EB !important;
 }
 
 .subjects-manager-controls {
@@ -94,14 +140,18 @@ tr, th, td{
     border-radius: 0px;
     border: unset;
     border-left: 1px solid black;
+    text-shadow: 1px 1px 1px black;
+    font-weight: 600;
+    border-right: 1px solid black;
+    background-color: #1C252C;
 }
 
 .subjects-manager-controls input {
-    color: black;
+    color: #E3E8EB;
     font-size: 14pt;
     font-weight: 500;
     padding-left: 15px;
-    background-color: unset;
+    background-color: #1C252C;
     border: unset;
     width: auto;
     flex-grow: 1;
@@ -113,6 +163,13 @@ tr, th, td{
     border: unset !important;
     border-radius: 0px;
     width: 85%;
+    color: black;
 }
 
 
+.content-width-limiter hr {
+    background-color: #F6F2F6 !important;
+    border: 0px solid black;
+    height: 1px;
+    width: 95%;
+}

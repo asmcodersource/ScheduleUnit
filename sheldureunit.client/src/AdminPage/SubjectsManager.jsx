@@ -80,8 +80,8 @@ const SubjectTable = ({ subjects, onEdit, onDelete }) => {
                         <td>{subject.subjectName}</td>
                         <td>{subject.subjectDescription}</td>
                         <td className="actionsColumn">
-                            <button onClick={() => onEdit(subject)}>Edit</button>
-                            <button onClick={() => onDelete(subject.id)}>Delete</button>
+                            <button className="edit-button" onClick={() => onEdit(subject)}>Edit</button>
+                            <button className="delete-button" onClick={() => onDelete(subject.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}
