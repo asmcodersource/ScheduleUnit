@@ -55,6 +55,18 @@ export default defineConfig({
                 target,
                 secure: false
             },
+            '^/subjects': {
+                target,
+                secure: false
+            },
+            '^/classrooms': {
+                target,
+                secure: false
+            },
+            '^/schedules': {
+                target,
+                secure: false
+            },
         },
         port: 5173,
         https: {

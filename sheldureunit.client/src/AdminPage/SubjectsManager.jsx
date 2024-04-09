@@ -1,36 +1,134 @@
 import { useEffect, useState } from 'react';
+import EditDialog from './EditDialog.jsx'
+import SureDialog from './SureDialog.jsx';
+import CreateDialog from './CreateDialog.jsx';
 import './SubjectsManager.css';
 
 function SubjectsManager() {
     // Стейты для данных поиска и нового предмета
+    const [dialog, setDialog] = useState(null);
+    const [subjects, setSubjects] = useState([]);
+    const [filteredSubjects, setFilteredSubjects] = useState(subjects);
     const [searchTerm, setSearchTerm] = useState('');
     const [newSubject, setNewSubject] = useState({ subjectName: '', subjectDescription: '' });
 
-    // Обработчик изменения данных поиска
-    const handleSearchTermChange = (event) => {
-        setSearchTerm(event.target.value);
-        // Дополнительная логика для фильтрации данных поиска или обновления списка предметов
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("/subjects", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + sessionStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        type: 'get',
+                    })
+                });
+                if (response.ok === true) {
+                    const data = await response.json();
+                    setSubjects(data);
+                    setFilteredSubjects(data);
+                }
+            } catch (error) {
+                console.error('Ошибка при получении данных:', error);
+            }
+        }
+        fetchData();
+    }, [dialog]);
 
-    // Обработчик изменения данных нового предмета
-    const handleNewSubjectChange = (event) => {
-        const { name, value } = event.target;
-        setNewSubject(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+    const handleEdit = (subject) => {
+        setDialog(
+            <EditDialog
+                entityName="Subject edit"
+                subject={subject}
+                cancelHandler={() => setDialog(null)}
+                submitHandler={async (editedSubject) => {
+                    setDialog(null);
+                    await fetch("/subjects", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + sessionStorage.getItem('token')
+                        },
+                        body: JSON.stringify({
+                            type: 'update',
+                            subject: editedSubject,
+                        })
+                    });
+                }}
+            />
+        );
     };
 
     // Обработчик создания нового предмета
     const handleCreateSubject = () => {
-        // Логика для создания нового предмета
-        console.log('Creating new subject:', newSubject);
-        // Сброс данных нового предмета
-        setNewSubject({ subjectName: '', subjectDescription: '' });
+        setDialog(
+            <CreateDialog
+                entityName="Subject create"
+                cancelHandler={() => setDialog(null)}
+                submitHandler={async (createdSubject) => {
+                    await fetch("/subjects", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + sessionStorage.getItem('token')
+                        },
+                        body: JSON.stringify({
+                            type: 'create',
+                            subject: createdSubject,
+                        })
+                    });
+                    setDialog(null);
+                }}
+            />
+        );
+    };
+
+    const handleDelete = (id) => {
+        setDialog(
+            <SureDialog
+                cancelHandler={() => setDialog(null)}
+                submitHandler={async () => {
+                    await fetch("/subjects", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + sessionStorage.getItem('token')
+                        },
+                        body: JSON.stringify({
+                            type: 'delete',
+                            id: id,
+                        })
+                    });
+                    setDialog(null)
+                }}
+                label="Deleting an item from the database will delete all lessons associated with it, including double ones."
+            />
+        );
+    };
+
+    // Обработчик изменения данных поиска
+    const handleSearchTermChange = (event) => {
+        setSearchTerm(event.target.value);
+        const searchString = event.target.value;
+        const filteredSubjects = subjects.filter(subject => {
+            return (
+                subject.SubjectName.toLowerCase().includes(searchString.toLowerCase()) ||
+                subject.Id.toString().includes(searchString) ||
+                subject.SubjectDescription.toLowerCase().includes(searchString.toLowerCase())
+            );
+        });
+        setFilteredSubjects(filteredSubjects);
     };
 
     return (
         <div className="subjects-manager-wrapper">
+            {dialog}
             <div className="subjects-manager-header">
                 <div className="content-width-limiter">
                     <h1>Subjects manager</h1>
@@ -49,17 +147,13 @@ function SubjectsManager() {
                 <button onClick={handleCreateSubject}>Create New</button>
             </div>
             <SubjectTable
-                subjects={subjects}
+                subjects={filteredSubjects}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />
         </div>
     );
 }
-
-export default SubjectsManager;
-
-
 
 const SubjectTable = ({ subjects, onEdit, onDelete }) => {
     return (
@@ -75,13 +169,13 @@ const SubjectTable = ({ subjects, onEdit, onDelete }) => {
             </thead>
             <tbody>
                 {subjects.map(subject => (
-                    <tr key={subject.id}>
-                        <td>{subject.id}</td>
-                        <td>{subject.subjectName}</td>
-                        <td>{subject.subjectDescription}</td>
+                    <tr key={subject.Id}>
+                        <td>{subject.Id}</td>
+                        <td>{subject.SubjectName}</td>
+                        <td>{subject.SubjectDescription}</td>
                         <td className="actionsColumn">
                             <button className="edit-button" onClick={() => onEdit(subject)}>Edit</button>
-                            <button className="delete-button" onClick={() => onDelete(subject.id)}>Delete</button>
+                            <button className="delete-button" onClick={() => onDelete(subject.Id)}>Delete</button>
                         </td>
                     </tr>
                 ))}
@@ -98,19 +192,4 @@ const SubjectTable = ({ subjects, onEdit, onDelete }) => {
 };
 
 
-const subjects = [
-    { id: 1, subjectName: 'Math', subjectDescription: 'Mathematics subject' },
-    { id: 2, subjectName: 'Science', subjectDescription: 'Science subject' },
-]
-
-// Функция для редактирования предмета
-const handleEdit = (subject) => {
-    // Здесь можно реализовать логику редактирования
-    console.log('Editing subject:', subject);
-};
-
-// Функция для удаления предмета
-const handleDelete = (id) => {
-    // Здесь можно реализовать логику удаления
-    setSubjects(subjects.filter(subject => subject.id !== id));
-};
+export default SubjectsManager;

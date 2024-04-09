@@ -138,10 +138,10 @@ export const Sheldure = (props) => {
                 
                 {rows.map((rowNumber, index) => (
                     <tr key={rowNumber}>
-                        <td className="sheldure-subject-number">
+                        <td className="sheldure-number">
                             {rowNumber}
                             <br />
-                            <span className="sheldure-subject-time">{subjectTimes[index][0]} - {subjectTimes[index][2]}</span>
+                            <span className="sheldure-time">{subjectTimes[index][0]} - {subjectTimes[index][2]}</span>
                         </td>
                         {cols.map((colNumber, colIndex) => (
                             <td key={`${rowNumber}-${colNumber}`} className={(dayOfWeekNumber === colIndex) && (currentTimeRange === index) ? "current-day" : ""}>

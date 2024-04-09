@@ -74,7 +74,9 @@ th {
 
 
 .table-wrapper td, .table-wrapper tr {
-    border: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
     text-align: left;
     padding: 5px;
 }
@@ -155,6 +157,7 @@ tr, th, td{
     border: unset;
     width: auto;
     flex-grow: 1;
+    text-shadow: 1px 1px 1px black;
 }
 
 
@@ -164,6 +167,7 @@ tr, th, td{
     border-radius: 0px;
     width: 85%;
     color: black;
+    text-shadow: unset;
 }
 
 

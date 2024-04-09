@@ -1,10 +1,10 @@
-.subject-wrapper{
+.wrapper{
     color: black;
     margin: 5px 0px;
     font-size: 12pt;
 }
 
-.subject-name {
+.name {
     color: #3966aa;
     margin: 1px 0px;
     font-size: 10pt;
@@ -13,14 +13,14 @@
     cursor: help;
 }
 
-.subject-type {
+.type {
     user-select: none;
     font-size: 10pt;
     color: #808080;
     margin: 1px 0px;
 }
 
-.subject-class {
+.class {
     font-size: 10pt;
     color: #808080;
     margin: 1px 0px;

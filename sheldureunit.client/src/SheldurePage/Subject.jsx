@@ -3,10 +3,10 @@ import './Subject.css';
 
 const Subject = (props) => {
     return (
-        <div className="subject-wrapper">
-            <a className="subject-name" href="#">{props.name}</a>
-            <p className="subject-type">{props.type}</p>
-            <p className="subject-class">{props.class}</p>
+        <div className="wrapper">
+            <a className="name" href="#">{props.name}</a>
+            <p className="type">{props.type}</p>
+            <p className="class">{props.class}</p>
         </div>
     );
 }

@@ -85,13 +85,13 @@
     width: 40px;
 }
 
-.sheldure-subject-number {
+.sheldure-number {
     font-weight: 600;
     text-align: center;
     user-select: none;
 }
 
-.sheldure-subject-time {
+.sheldure-time {
     font-weight: 400;
     color: #808080;
     user-select: none;

@@ -38,6 +38,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<AdminPanelMiddleware>();
 app.UseMiddleware<ScheldureFetchMiddleware>();
 app.UseMiddleware<AuthMiddleware>();
 app.MapFallbackToFile("/index.html");
