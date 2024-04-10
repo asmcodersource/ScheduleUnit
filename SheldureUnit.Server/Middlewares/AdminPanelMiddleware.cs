@@ -79,7 +79,7 @@ namespace SheldureUnit.Server.Middlewares
                     var name = requestData["subject"]["SubjectName"].ToString();
                     var description = requestData["subject"]?["SubjectDescription"]?.ToString();
                     var creatingSubject = new Subject { SubjectName = name, SubjectDescription = description };
-                    dbContext.Add(creatingSubject);
+                    dbContext.Subjects.Add(creatingSubject);
                     dbContext.SaveChanges();
                 }
             }
@@ -87,7 +87,51 @@ namespace SheldureUnit.Server.Middlewares
 
         public async Task ClassRoomsRequestInvoke(HttpContext context, DatabaseContext dbContext)
         {
-
+            using (var reader = new StreamReader(context.Request.Body))
+            {
+                var requestBody = await reader.ReadToEndAsync();
+                var requestData = JObject.Parse(requestBody);
+                if (requestData["type"].ToString() == "get")
+                {
+                    var subjectsList = dbContext.ClassRooms.ToList();
+                    context.Response.StatusCode = StatusCodes.Status200OK;
+                    context.Response.ContentType = "application/json";
+                    var responseData = JsonConvert.SerializeObject(subjectsList);
+                    await context.Response.WriteAsync(responseData);
+                }
+                else if (requestData["type"].ToString() == "update")
+                {
+                    var id = requestData["room"]["Id"].ToString();
+                    var name = requestData["room"]["Name"].ToString();
+                    var description = requestData["room"]["Description"].ToString();
+                    var updatedSubject = new ClassRoom { Id = Convert.ToInt32(id), Name = name, Description = description };
+                    dbContext.ClassRooms.Update(updatedSubject);
+                    dbContext.SaveChanges();
+                    context.Response.StatusCode = StatusCodes.Status200OK;
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync("{}");
+                }
+                else if (requestData["type"].ToString() == "delete")
+                {
+                    var id = Convert.ToInt32(requestData["id"].ToString());
+                    var removeClassRoom = dbContext.ClassRooms.Where(x => x.Id == id).FirstOrDefault();
+                    if (removeClassRoom is not null)
+                    {
+                        var lessons = dbContext.Lessons.Where(x => x.FirstClassRoomId == id || x.SecondClassRoomId == id).ToList();
+                        dbContext.Lessons.RemoveRange(lessons);
+                        dbContext.ClassRooms.Remove(removeClassRoom);
+                        dbContext.SaveChanges();
+                    }
+                }
+                else if (requestData["type"].ToString() == "create")
+                {
+                    var name = requestData["room"]["Name"].ToString();
+                    var description = requestData["room"]?["Description"]?.ToString();
+                    var creatingSubject = new ClassRoom { Name = name, Description = description };
+                    dbContext.ClassRooms.Add(creatingSubject);
+                    dbContext.SaveChanges();
+                }
+            }
         }
 
         public async Task SchedulesRequestInvoke(HttpContext context, DatabaseContext dbContext)

@@ -4,18 +4,17 @@ import SureDialog from './SureDialog.jsx';
 import CreateDialog from './CreateDialog.jsx';
 import './SubjectsManager.css';
 
-function SubjectsManager() {
+function ClassRoomsManager() {
     // Стейты для данных поиска и нового предмета
     const [dialog, setDialog] = useState(null);
     const [subjects, setSubjects] = useState([]);
     const [filteredSubjects, setFilteredSubjects] = useState(subjects);
     const [searchTerm, setSearchTerm] = useState('');
-    const [newSubject, setNewSubject] = useState({ subjectName: '', subjectDescription: '' });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("/subjects", {
+                const response = await fetch("/classrooms", {
                     method: "POST",
                     headers: {
                         "Accept": "application/json",
@@ -38,15 +37,15 @@ function SubjectsManager() {
         fetchData();
     }, [dialog]);
 
-    const handleEdit = (subject) => {
+    const handleEdit = (room) => {
         setDialog(
             <EditDialog
-                entityName="Subject edit"
-                subject={subject}
+                entityName="Class room edit"
+                subject={{ Id: room.Id, SubjectName: room.Name, SubjectDescription: room.Description }}
                 cancelHandler={() => setDialog(null)}
-                submitHandler={async (editedSubject) => {
+                submitHandler={async (editedRoom) => {
                     setDialog(null);
-                    await fetch("/subjects", {
+                    await fetch("/classrooms", {
                         method: "POST",
                         headers: {
                             "Accept": "application/json",
@@ -55,7 +54,7 @@ function SubjectsManager() {
                         },
                         body: JSON.stringify({
                             type: 'update',
-                            subject: editedSubject,
+                            room: { Id: editedRoom.Id, Name: editedRoom.SubjectName, Description: editedRoom.SubjectDescription },
                         })
                     });
                 }}
@@ -67,10 +66,10 @@ function SubjectsManager() {
     const handleCreateSubject = () => {
         setDialog(
             <CreateDialog
-                entityName="Subject create"
+                entityName="Class room create"
                 cancelHandler={() => setDialog(null)}
-                submitHandler={async (createdSubject) => {
-                    await fetch("/subjects", {
+                submitHandler={async (createdRoom) => {
+                    await fetch("/classrooms", {
                         method: "POST",
                         headers: {
                             "Accept": "application/json",
@@ -79,7 +78,7 @@ function SubjectsManager() {
                         },
                         body: JSON.stringify({
                             type: 'create',
-                            subject: createdSubject,
+                            room: { Name: createdRoom.SubjectName, Description: createdRoom.SubjectDescription },
                         })
                     });
                     setDialog(null);
@@ -93,7 +92,7 @@ function SubjectsManager() {
             <SureDialog
                 cancelHandler={() => setDialog(null)}
                 submitHandler={async () => {
-                    await fetch("/subjects", {
+                    await fetch("/classrooms", {
                         method: "POST",
                         headers: {
                             "Accept": "application/json",
@@ -118,9 +117,9 @@ function SubjectsManager() {
         const searchString = event.target.value;
         const filteredSubjects = subjects.filter(subject => {
             return (
-                subject.SubjectName.toLowerCase().includes(searchString.toLowerCase()) ||
+                subject.Name.toLowerCase().includes(searchString.toLowerCase()) ||
                 subject.Id.toString().includes(searchString) ||
-                subject.SubjectDescription.toLowerCase().includes(searchString.toLowerCase())
+                subject.Description.toLowerCase().includes(searchString.toLowerCase())
             );
         });
         setFilteredSubjects(filteredSubjects);
@@ -131,7 +130,7 @@ function SubjectsManager() {
             {dialog}
             <div className="subjects-manager-header">
                 <div className="content-width-limiter">
-                    <h1>Subjects manager</h1>
+                    <h1>Class rooms manager</h1>
                     <hr />
                     <h2>This section allows you to manage the list of items. In this section you can view, create, edit and delete items.
                         <br />For each item, information about its name and description is available.</h2>
@@ -146,7 +145,7 @@ function SubjectsManager() {
                 />
                 <button onClick={handleCreateSubject}>Create new</button>
             </div>
-            <SubjectTable
+            <ClassRoomsTable
                 subjects={filteredSubjects}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
@@ -155,41 +154,41 @@ function SubjectsManager() {
     );
 }
 
-const SubjectTable = ({ subjects, onEdit, onDelete }) => {
+const ClassRoomsTable = ({ subjects, onEdit, onDelete }) => {
     return (
         <div class="table-wrapper">
-        <table className="subjects-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {subjects.map(subject => (
-                    <tr key={subject.Id}>
-                        <td>{subject.Id}</td>
-                        <td>{subject.SubjectName}</td>
-                        <td>{subject.SubjectDescription}</td>
-                        <td className="actionsColumn">
-                            <button className="edit-button" onClick={() => onEdit(subject)}>Edit</button>
-                            <button className="delete-button" onClick={() => onDelete(subject.Id)}>Delete</button>
-                        </td>
+            <table className="subjects-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
                     </tr>
-                ))}
+                </thead>
+                <tbody>
+                    {subjects.map(subject => (
+                        <tr key={subject.Id}>
+                            <td>{subject.Id}</td>
+                            <td>{subject.Name}</td>
+                            <td>{subject.Description}</td>
+                            <td className="actionsColumn">
+                                <button className="edit-button" onClick={() => onEdit(subject)}>Edit</button>
+                                <button className="delete-button" onClick={() => onDelete(subject.Id)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
                     <tr class="stretch-row">
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-            </tbody>
+                </tbody>
             </table>
         </div>
     );
 };
 
 
-export default SubjectsManager;
+export default ClassRoomsManager;
