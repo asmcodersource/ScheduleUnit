@@ -8,16 +8,7 @@ export const Sheldure = (props) => {
     const rows = Array.from({ length: 7 }, (v, i) => i + 1);
     const cols = Array.from({ length: 5 }, (v, i) => i + 1);
 
-    const subjectTimes = [
-        ["9:00","-", "10:20"],
-        ["10:30", "-", "11:50"],
-        ["12:20", "-", "13:40"],
-        ["13:50", "-", "15:10"],
-        ["15:20", "-", "16:40"],
-        ["16:50", "-", "17:10"],
-        ["17:20", "-", "18:40"],
-        ["18:50", "-", "19:10"],
-    ];
+    const [subjectTimes, setSubjectTimes] = useState([])
 
 
     const now = new Date();
@@ -44,6 +35,8 @@ export const Sheldure = (props) => {
     }
 
     const [groupName, setGroupName] = useState("");
+    const [scheduleTitle, setScheduleTitle] = useState("")
+    const [scheduleMessage, setScheduleMessage] = useState("")
     const [schelduleName, setSchelduleName] = useState("");
     const [schelduleDuration, setSchelduleDuration] = useState("");
     const [scheduleData, setScheduleData] = useState([]);
@@ -73,7 +66,12 @@ export const Sheldure = (props) => {
         "Thursday", "Friday", "Saturday"
     ];
 
-    const weekName = "first"
+    const weeksNames = [
+        "first",
+        "second",
+    ]
+
+    const [weekName, setWeekName] = useState("")
 
     const formattedDate = `${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
 
@@ -97,10 +95,24 @@ export const Sheldure = (props) => {
                 }
 
                 const responseData = await response.json();
-                setGroupName(responseData["Group"])
-                setSchelduleName(responseData["Name"])
-                setSchelduleDuration(responseData["Duration"])  
-                setScheduleData(formatScheduleData(responseData));
+                setGroupName(responseData['Scheldule']["Group"])
+                setSchelduleName(responseData['Scheldule']["Name"])
+                setSchelduleDuration(responseData['Scheldule']["Duration"])
+                setScheduleData(formatScheduleData(responseData['Scheldule']));
+                setScheduleTitle(responseData['ScheduleGeneral']['SchedulesTitle'])
+                setScheduleMessage(responseData['ScheduleGeneral']['SchedulesDescription'])
+
+                var subjectTimes = JSON.parse(responseData['ScheduleGeneral']['SchedulesLessons']).map(item => {
+                    const t1 = `${item.t1.hours}:${item.t1.minutes}`;
+                    const t2 = `${item.t2.hours}:${item.t2.minutes}`;
+                    return [t1, "-", t2];
+                });
+                setSubjectTimes(subjectTimes);
+                if (responseData['ScheduleGeneral']['ShedulesParity'] == 'odd') {
+                    setWeekName(weeksNames[(getDateWeek() + 1) % 2]);
+                } else {
+                    setWeekName(weeksNames[(getDateWeek() + 0) % 2]);
+                }
                 setIsLoading(false);
             } catch (error) {
                 console.error('Ошибка при получении данных:', error);
@@ -114,10 +126,12 @@ export const Sheldure = (props) => {
         return (<div className="loading-message">Loading...</div>)
     }
 
+    console.log(subjectTimes);
     return (
         <div className="sheldure-page-wrapper" >
             <div className="sheldure-info">
-                <h1 className="info-name-header">Sheldure</h1>
+                <h1 className="info-name-header">{scheduleTitle}</h1>
+                <div className="center-wrapper"><p className="scheldule-message">{scheduleMessage}</p></div>
                 <br />
                 <h2 className="info-group-name">{groupName}</h2>
                 <br />
@@ -136,15 +150,15 @@ export const Sheldure = (props) => {
                     <td>Friday</td>
                 </tr>
                 
-                {rows.map((rowNumber, index) => (
-                    <tr key={rowNumber}>
+                {subjectTimes.map((subjectTime, index) => (
+                    <tr key={index}>
                         <td className="sheldure-number">
-                            {rowNumber}
+                            {index + 1}
                             <br />
-                            <span className="sheldure-time">{subjectTimes[index][0]} - {subjectTimes[index][2]}</span>
+                            <span className="sheldure-time">{subjectTime[0]}<br/> - <br/>{subjectTime[2]}</span>
                         </td>
                         {cols.map((colNumber, colIndex) => (
-                            <td key={`${rowNumber}-${colNumber}`} className={(dayOfWeekNumber === colIndex) && (currentTimeRange === index) ? "current-day" : ""}>
+                            <td key={`${index}-${colNumber}`} className={(dayOfWeekNumber === colIndex) && (currentTimeRange === index) ? "current-day" : ""}>
                                 {scheduleData && scheduleData[colIndex] && scheduleData[colIndex][index] && (
                                     scheduleData[colIndex][index].SecondSubject ? (
                                         <DuplexSubject
@@ -204,3 +218,21 @@ const formatScheduleData = (scheduleData) => {
 
 export default Sheldure;
 
+
+// https://www.geeksforgeeks.org/calculate-current-week-number-in-javascript/
+function getDateWeek(date) {
+    const currentDate =
+        (typeof date === 'object') ? date : new Date();
+    const januaryFirst =
+        new Date(currentDate.getFullYear(), 0, 1);
+    const daysToNextMonday =
+        (januaryFirst.getDay() === 1) ? 0 :
+            (7 - januaryFirst.getDay()) % 7;
+    const nextMonday =
+        new Date(currentDate.getFullYear(), 0,
+            januaryFirst.getDate() + daysToNextMonday);
+
+    return (currentDate < nextMonday) ? 52 :
+        (currentDate > nextMonday ? Math.ceil(
+            (currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
+}

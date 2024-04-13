@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import SubjectsManager from './SubjectsManager';
 import ClassRoomsManager from './ClassRoomsManager';
+import GeneralManager from './GeneralManager';
 import './AdminPage.css';
 
 function AdminPage() {
     const subjectsManager = <SubjectsManager />
     const classRoomsManager = <ClassRoomsManager />
+    const generalManager = <GeneralManager />
     const [selectedManager, setSelectedManager] = useState(null);
     const [authorized, setAuthorized] = useState();
     const [currentManager, setCurrentManager] = useState(null);
@@ -54,7 +56,7 @@ function AdminPage() {
                             <hr />
                             <h2>manage your schedule easily and efficiently with our schedule management module </h2>
                         </div>
-                        <button className={selectedManager === 1 ? "selected" : ""} onClick={() => { setCurrentManager(subjectsManager); setSelectedManager(1); }}>general manager</button>
+                        <button className={selectedManager === 1 ? "selected" : ""} onClick={() => { setCurrentManager(generalManager); setSelectedManager(1); }}>general manager</button>
                         <button className={selectedManager === 2 ? "selected" : ""} onClick={() => { setCurrentManager(subjectsManager); setSelectedManager(2); }}>schedules manager</button>
                         <button className={selectedManager === 3 ? "selected" : ""} onClick={() => { setCurrentManager(classRoomsManager); setSelectedManager(3); }}>class rooms manager</button>
                         <button className={selectedManager === 4 ? "selected" : ""} onClick={() => { setCurrentManager(subjectsManager); setSelectedManager(4); }}>subjects manager</button>

@@ -9,6 +9,7 @@ namespace SheldureUnit.Server.Data
         public DbSet<ClassRoom> ClassRooms { get; set; } = null!;
         public DbSet<Lesson> Lessons { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<GeneralSettings> GeneralSettings { get; set; } = null!;
 
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -39,6 +40,17 @@ namespace SheldureUnit.Server.Data
             modelBuilder.Entity<Schedule>().HasData(
                 new Schedule { Id = 1, Group = "Group A", Name = "Schedule for Group A", Duration = "1 hour" }
             // Добавьте столько объектов Schedule, сколько вам нужно
+            );
+
+            modelBuilder.Entity<GeneralSettings>().HasData(
+                new GeneralSettings
+                {
+                    Id = 1,
+                    SchedulesTitle = "Schedules",
+                    SchedulesDescription = "This is a couples program created using the Schedules Unit module. Here you can get information about lessons on different days of the week, as well as some additional information about them (audience, lesson type, and subject-related link). The current lesson is highlighted in color. Additional information about a particular object can be found by hovering the mouse over the object. The name of the item can be a hyperlink to some other resource on the Internet.",
+                    SchedulesLessons = "[{\"id\":\"1\",\"t1\":{\"hours\":\"9\",\"minutes\":\"00\"},\"t2\":{\"hours\":\"10\",\"minutes\":\"20\"}},{\"id\":\"2\",\"t1\":{\"hours\":\"10\",\"minutes\":\"30\"},\"t2\":{\"hours\":\"11\",\"minutes\":\"50\"}},{\"id\":\"3\",\"t1\":{\"hours\":\"12\",\"minutes\":\"20\"},\"t2\":{\"hours\":\"13\",\"minutes\":\"40\"}},{\"id\":\"4\",\"t1\":{\"hours\":\"13\",\"minutes\":\"50\"},\"t2\":{\"hours\":\"15\",\"minutes\":\"10\"}}]",
+                    ShedulesParity = "odd"
+                }
             );
 
             // Генерация тестовых данных для Lesson

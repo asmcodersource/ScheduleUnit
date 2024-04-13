@@ -141,7 +141,35 @@ namespace SheldureUnit.Server.Middlewares
 
         public async Task GeneralRequestInvoke(HttpContext context, DatabaseContext dbContext)
         {
-
+            using (var reader = new StreamReader(context.Request.Body))
+            {
+                var requestBody = await reader.ReadToEndAsync();
+                var requestData = JObject.Parse(requestBody);
+                if (requestData["type"].ToString() == "getGeneralSettings")
+                {
+                    var generalSettings = dbContext.GeneralSettings.First();
+                    var responseData = JsonConvert.SerializeObject(generalSettings);
+                    await context.Response.WriteAsync(responseData);
+                } else if (requestData["type"].ToString() == "setFirstSection")
+                {
+                    var name = requestData["name"].ToString();
+                    var description = requestData["description"].ToString();
+                    var generalSettings = dbContext.GeneralSettings.First();
+                    generalSettings.SchedulesTitle = name;
+                    generalSettings.SchedulesDescription = description;
+                    dbContext.GeneralSettings.Update(generalSettings);
+                    dbContext.SaveChanges();
+                } else if (requestData["type"].ToString() == "setSecondSection")
+                {
+                    var lessons = requestData["lessons"].ToString();
+                    var parity = requestData["parity"].ToString();
+                    var generalSettings = dbContext.GeneralSettings.First();
+                    generalSettings.SchedulesLessons = lessons;
+                    generalSettings.ShedulesParity = parity;
+                    dbContext.GeneralSettings.Update(generalSettings);
+                    dbContext.SaveChanges();
+                }
+            }   
         }
     }
 }

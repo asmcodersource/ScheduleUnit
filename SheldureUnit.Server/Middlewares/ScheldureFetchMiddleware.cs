@@ -47,10 +47,11 @@ namespace SheldureUnit.Server.Middlewares
                     }
 
                     data.Lessons = lessons;
+                    var generalOptions = dbContext.GeneralSettings.First();
 
                     context.Response.StatusCode = StatusCodes.Status200OK;
                     context.Response.ContentType = "application/json";
-                    var responseData = JsonConvert.SerializeObject(data);
+                    var responseData = JsonConvert.SerializeObject(new { Scheldule = data, ScheduleGeneral= generalOptions });
                     await context.Response.WriteAsync(responseData);
                     return;
                 }

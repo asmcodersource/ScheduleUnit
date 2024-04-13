@@ -101,3 +101,18 @@
 .current-day {
     background-color: #dee0a6;
 }
+
+.scheldule-message{
+    max-width: 1000px;
+    text-align: justify;
+    text-indent: 50px;
+}
+
+.center-wrapper{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+}
