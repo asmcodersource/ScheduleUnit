@@ -150,7 +150,8 @@ namespace SheldureUnit.Server.Middlewares
                     var generalSettings = dbContext.GeneralSettings.First();
                     var responseData = JsonConvert.SerializeObject(generalSettings);
                     await context.Response.WriteAsync(responseData);
-                } else if (requestData["type"].ToString() == "setFirstSection")
+                }
+                else if (requestData["type"].ToString() == "setFirstSection")
                 {
                     var name = requestData["name"].ToString();
                     var description = requestData["description"].ToString();
@@ -159,7 +160,8 @@ namespace SheldureUnit.Server.Middlewares
                     generalSettings.SchedulesDescription = description;
                     dbContext.GeneralSettings.Update(generalSettings);
                     dbContext.SaveChanges();
-                } else if (requestData["type"].ToString() == "setSecondSection")
+                }
+                else if (requestData["type"].ToString() == "setSecondSection")
                 {
                     var lessons = requestData["lessons"].ToString();
                     var parity = requestData["parity"].ToString();
@@ -169,7 +171,92 @@ namespace SheldureUnit.Server.Middlewares
                     dbContext.GeneralSettings.Update(generalSettings);
                     dbContext.SaveChanges();
                 }
-            }   
+                else if (requestData["type"].ToString() == "getAllSchedules")
+                {
+                    var schedules = dbContext.Schedules.ToList();
+                    foreach (var schedule in schedules)
+                    {
+                        var lessons = dbContext.Lessons.Where(x => x.ScheduleId == schedule.Id).ToList();
+                        foreach (var lesson in lessons)
+                        {
+                            if (lesson.FirstSubjectId is not null)
+                                lesson.FirstSubject = dbContext.Subjects.Where(x => x.Id == lesson.FirstSubjectId).FirstOrDefault();
+                            if (lesson.SecondSubjectId is not null)
+                                lesson.SecondSubject = dbContext.Subjects.Where(x => x.Id == lesson.SecondSubjectId).FirstOrDefault();
+                            if (lesson.FirstClassRoomId is not null)
+                                lesson.FirstClassRoom = dbContext.ClassRooms.Where(x => x.Id == lesson.FirstClassRoomId).FirstOrDefault();
+                            if (lesson.SecondClassRoomId is not null)
+                                lesson.SecondClassRoom = dbContext.ClassRooms.Where(x => x.Id == lesson.SecondClassRoomId).FirstOrDefault();
+                        }
+                        schedule.Lessons = lessons;
+                    }
+                    var responseData = JsonConvert.SerializeObject(schedules);
+                    await context.Response.WriteAsync(responseData);
+                }
+                else if (requestData["type"].ToString() == "deleteSchedule")
+                {
+                    var schelduleId = Convert.ToInt32(requestData["id"].ToString());
+                    dbContext.Schedules.RemoveRange(dbContext.Schedules.Where(x => x.Id == schelduleId));
+                    dbContext.Lessons.RemoveRange(dbContext.Lessons.Where(x => x.ScheduleId == schelduleId));
+                    dbContext.SaveChanges();
+                }
+                else if (requestData["type"].ToString() == "createSchedule")
+                {
+                    var name = requestData["scheldule"]["name"].ToString();
+                    var group = requestData["scheldule"]["group"].ToString();
+                    var duration = requestData["scheldule"]?["duration"]?.ToString();
+                    var message = requestData["scheldule"]?["message"]?.ToString();
+                    var createdScheldule = new Schedule { Name = name, Group = group, Duration = duration, Message = message };
+                    dbContext.Schedules.Add(createdScheldule);
+                    dbContext.SaveChanges();
+                }
+                else if (requestData["type"].ToString() == "updateScheldule")
+                {
+                    var id = Convert.ToInt32(requestData["scheldule"]["id"].ToString());
+                    var name = requestData["scheldule"]["name"].ToString();
+                    var group = requestData["scheldule"]["group"].ToString();
+                    var duration = requestData["scheldule"]?["duration"]?.ToString();
+                    var message = requestData["scheldule"]?["message"]?.ToString();
+
+                    var updatedScheldule = dbContext.Schedules.Where(x => x.Id == id).First();
+                    updatedScheldule.Duration = duration;
+                    updatedScheldule.Message = message;
+                    updatedScheldule.Group = group;
+                    updatedScheldule.Name = name;
+
+                    dbContext.Schedules.Update(updatedScheldule);
+                    dbContext.SaveChanges();
+                }
+                else if (requestData["type"].ToString() == "updateLesson")
+                {
+                    var scheduleId = Convert.ToInt32(requestData["scheduleId"].ToString());
+                    var day = (Day)Convert.ToInt32(requestData["day"].ToString());
+                    var lessonNumber = Convert.ToInt32(requestData["lessonNumber"].ToString());
+                    // delete exist lessons from database
+                    dbContext.Lessons.RemoveRange(dbContext.Lessons.Where(x => x.Day == day && x.Number == lessonNumber && x.ScheduleId == scheduleId));
+                    dbContext.SaveChanges();
+
+                    Lesson lesson = new Lesson();
+                    lesson.FirstSubjectId = Convert.ToInt32(requestData["lesson"]?["FirstSubjectId"]?.ToString());
+                    lesson.FirstClassRoomId = Convert.ToInt32(requestData["lesson"]?["FirstClassRoom"]?["Id"]?.ToString());
+                    lesson.FirstLessonType = requestData["lesson"]?["FirstLessonType"]?.ToString();
+                    lesson.FirstLessonLink = requestData["lesson"]?["FirstLessonLink"]?.ToString();
+                    try
+                    {
+                        lesson.SecondSubjectId = Convert.ToInt32(requestData["lesson"]?["SecondClassRoomId"]?.ToString());
+                        lesson.SecondClassRoomId = Convert.ToInt32(requestData["lesson"]?["SecondClassRoom"]?["Id"]?.ToString());
+                        lesson.SecondLessonType = requestData["lesson"]?["SecondLessonType"]?.ToString();
+                        lesson.SecondLessonLink = requestData["lesson"]?["SecondLessonLink"]?.ToString();
+                    } catch { }
+
+                    lesson.Day = day;
+                    lesson.Number = lessonNumber;
+                    lesson.ScheduleId = scheduleId;
+                    if( lesson.FirstSubjectId != null )
+                        dbContext.Lessons.Add(lesson);
+                    dbContext.SaveChanges();
+                }
+            }
         }
     }
 }

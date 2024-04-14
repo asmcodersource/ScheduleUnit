@@ -1,0 +1,39 @@
+.lesson-edit-form{
+    padding: 10px;
+}
+
+.lesson-section{
+    padding: 5px 10px;
+}
+
+.lesson-edit-radio-buttons{
+    padding: 5px 0px;
+}
+
+.lesson-section select {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 11pt;
+    padding: 3px 0px;
+}
+
+.lesson-section input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 11pt;
+    padding: 3px 3px;
+}
+
+.lesson-edit-form .buttons-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 0px 10px;
+}
+
+.lesson-edit-form button {
+    padding: 5px 20px;
+    text-shadow: 1px 1px 1px black;
+}
+

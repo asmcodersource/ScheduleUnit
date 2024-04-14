@@ -40,6 +40,7 @@ export const Sheldure = (props) => {
     const [schelduleName, setSchelduleName] = useState("");
     const [schelduleDuration, setSchelduleDuration] = useState("");
     const [scheduleData, setScheduleData] = useState([]);
+    const [groupMessage, setGroupMessage] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const currentDate = new Date();
     const dayOfWeekNumber = currentDate.getDay() - 1;
@@ -98,9 +99,11 @@ export const Sheldure = (props) => {
                 setGroupName(responseData['Scheldule']["Group"])
                 setSchelduleName(responseData['Scheldule']["Name"])
                 setSchelduleDuration(responseData['Scheldule']["Duration"])
+                setGroupMessage(responseData['Scheldule']["Message"])
                 setScheduleData(formatScheduleData(responseData['Scheldule']));
                 setScheduleTitle(responseData['ScheduleGeneral']['SchedulesTitle'])
                 setScheduleMessage(responseData['ScheduleGeneral']['SchedulesDescription'])
+
 
                 var subjectTimes = JSON.parse(responseData['ScheduleGeneral']['SchedulesLessons']).map(item => {
                     const t1 = `${item.t1.hours}:${item.t1.minutes}`;
@@ -134,6 +137,7 @@ export const Sheldure = (props) => {
                 <div className="center-wrapper"><p className="scheldule-message">{scheduleMessage}</p></div>
                 <br />
                 <h2 className="info-group-name">{groupName}</h2>
+                <div className="center-wrapper"><p className="scheldule-message">{groupMessage}</p></div>
                 <br />
                 <h2 className="info-sheldure-name">{schelduleName}</h2>
                 <h3 className="info-sheldure-duration">{schelduleDuration}</h3>
@@ -168,9 +172,9 @@ export const Sheldure = (props) => {
                                                 class: scheduleData[colIndex][index].FirstClassRoom.Name
                                             }}
                                             subject2={{
-                                                name: scheduleData[colIndex][index].FirstSubject.SubjectName,
-                                                type: scheduleData[colIndex][index].FirstLessonType,
-                                                class: scheduleData[colIndex][index].FirstClassRoom.Name
+                                                name: scheduleData[colIndex][index].SecondSubject.SubjectName,
+                                                type: scheduleData[colIndex][index].SecondLessonType,
+                                                class: scheduleData[colIndex][index].SecondClassRoom.Name
                                             }}
                                         />
                                     ) : (

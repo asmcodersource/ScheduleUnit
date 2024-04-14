@@ -6,7 +6,7 @@ namespace SheldureUnit.Server.Data
 {
     public enum Day
     {
-        Monday,
+        Monday = 0,
         Tuesday,
         Wednesday,
         Thursday,
@@ -29,14 +29,16 @@ namespace SheldureUnit.Server.Data
         public int? FirstClassRoomId { get; set; }
         public ClassRoom? FirstClassRoom { get; set; }
         public string? FirstLessonType { get; set; }
+        public string? FirstLessonLink { get; set; }
 
 
         [ForeignKey("SecondSubjectId"), AllowNull]
-        public int? SecondSubjectId { get; set; }
-        public Subject? SecondSubject { get; set; }
-        public int? SecondClassRoomId { get; set; }
-        public ClassRoom? SecondClassRoom { get; set; }
-        public string? SecondLessonType { get; set; }
+        public int? SecondSubjectId { get; set; } = null;
+        public Subject? SecondSubject { get; set; } = null;
+        public int? SecondClassRoomId { get; set; } = null;
+        public ClassRoom? SecondClassRoom { get; set; } = null;
+        public string? SecondLessonType { get; set; } = null;
+        public string? SecondLessonLink { get; set; } = null;
 
 
         [ForeignKey("ScheduleId")]

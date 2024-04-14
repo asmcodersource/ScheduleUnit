@@ -19,6 +19,10 @@ namespace SheldureUnit.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, Login = "admin", Password = "123123"}
+            );
+
             // Генерация тестовых данных для ClassRoom
             modelBuilder.Entity<ClassRoom>().HasData(
                 new ClassRoom { Id = 1, Name = "Classroom 101", Description = "Description for Classroom 101" },
@@ -38,7 +42,13 @@ namespace SheldureUnit.Server.Data
 
             // Генерация тестовых данных для Schedule
             modelBuilder.Entity<Schedule>().HasData(
-                new Schedule { Id = 1, Group = "Group A", Name = "Schedule for Group A", Duration = "1 hour" }
+                new Schedule { 
+                    Id = 1, 
+                    Group = "Group A", 
+                    Name = "Schedule for Group A", 
+                    Duration = "1 hour",
+                    Message = "Dear students!\r\n\r\nWe welcome you with delight to a new week of study filled with opportunities and prospects! This time around, you'll find another class schedule that presents an important kaleidoscope of academic and creative opportunities. We are proud to invite you to approach this week with full enthusiasm and a desire to learn more.",
+                }
             // Добавьте столько объектов Schedule, сколько вам нужно
             );
 

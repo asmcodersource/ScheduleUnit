@@ -18,5 +18,6 @@ namespace SheldureUnit.Server.Data
         public string Duration { get; set; }
 
         public ICollection<Lesson> Lessons { get; set; }
+        public string? Message { get; set; }
     }
 }

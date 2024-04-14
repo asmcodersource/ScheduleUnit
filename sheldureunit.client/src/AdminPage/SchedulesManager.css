@@ -1,0 +1,97 @@
+.subjects-wrapper {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: all 1s ease-out;    
+}
+
+.scheldule-object {
+    margin: 10px 15px;
+    width: 40%;
+    max-width: 500px;
+    min-width: 250px;
+    height: auto;
+    background-color: azure;
+    border-radius: 5px;
+    transition: all 1s ease-out;
+    border: 2px solid rgba(0,0,0,0.7);
+    box-shadow: -5px 10px 0px 0px rgba(0,0,0,0.3); 
+    flex-grow: 1;
+    display: flex;
+    flex-direction:column;
+}
+
+.scheldule-object .name-row {
+    padding: 3px 10px;
+    background-color: #090f14;
+}
+
+.scheldule-object .actions-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;    
+    justify-content: flex-end;
+    margin-bottom: 0px;
+}
+
+.actions-row button{
+    border-radius: 0px;
+    border: 0px solid black;
+    padding: 3px 25px;
+    width: 100px;
+    height: 25px;
+    text-shadow: 1px 1px 0px black;
+}
+
+.scheldule-object .scheldule-id {
+    margin: 0px 5px;
+    color: #919191;
+}
+
+.scheldule-content{
+    height: auto;
+    padding: 10px 15px;
+    box-sizing: border-box;
+}
+
+.scheldule-object .scheldule-name {
+    margin: 0px 5px;
+    width: auto;
+    color: #b8b8b8;
+    text-align: center;
+    display: inline-block;
+    font-size: 11pt;
+    font-weight: 600;
+}
+
+.scheldule-duration, .scheldule-description, .scheldule-group, .scheldule-message {
+    text-indent: 25px;
+    font-size: 11pt;
+    color: black;
+    text-align: justify;
+    margin: 3px 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.scheldule-description, .scheldule-message {
+    -webkit-line-clamp: 4;
+}
+
+.scheldule-duration .header, .scheldule-description .header, .scheldule-group .header, .scheldule-message .header {
+    color: black;
+    font-weight: 700;
+    margin: 5px 0px;
+}
+
+.vertical-stretch{
+    height:100%;
+}
