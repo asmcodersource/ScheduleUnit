@@ -167,21 +167,33 @@ export const Sheldure = (props) => {
                                     scheduleData[colIndex][index].SecondSubject ? (
                                         <DuplexSubject
                                             subject1={{
+                                                id: scheduleData[colIndex][index].Id + 0,
+                                                subjectDescription: scheduleData[colIndex][index].FirstSubject.SubjectDescription,
                                                 name: scheduleData[colIndex][index].FirstSubject.SubjectName,
                                                 type: scheduleData[colIndex][index].FirstLessonType,
-                                                class: scheduleData[colIndex][index].FirstClassRoom.Name
+                                                class: scheduleData[colIndex][index].FirstClassRoom.Name,
+                                                classRoomDescription: scheduleData[colIndex][index].FirstClassRoom.Description,
+                                                link: scheduleData[colIndex][index].FirstLessonLink
                                             }}
                                             subject2={{
+                                                id: (scheduleData[colIndex][index].Id + 2),
+                                                subjectDescription: scheduleData[colIndex][index].SecondSubject.SubjectDescription,
                                                 name: scheduleData[colIndex][index].SecondSubject.SubjectName,
                                                 type: scheduleData[colIndex][index].SecondLessonType,
-                                                class: scheduleData[colIndex][index].SecondClassRoom.Name
+                                                class: scheduleData[colIndex][index].SecondClassRoom.Name,
+                                                classRoomDescription:scheduleData[colIndex][index].SecondClassRoom.Description,
+                                                link: scheduleData[colIndex][index].SecondLessonLink
                                             }}
                                         />
                                     ) : (
                                             <Subject
+                                                id={scheduleData[colIndex][index].Id}
+                                                subjectDescription={scheduleData[colIndex][index].FirstSubject.SubjectDescription}
                                                 name={scheduleData[colIndex][index].FirstSubject.SubjectName}
                                                 type={scheduleData[colIndex][index].FirstLessonType}
                                                 class={scheduleData[colIndex][index].FirstClassRoom.Name}
+                                                classRoomDescription={scheduleData[colIndex][index].FirstClassRoom.Description }
+                                                link = { scheduleData[colIndex][index].FirstLessonLink }
                                         />
                                     )
                                 )}
@@ -201,19 +213,22 @@ const formatScheduleData = (scheduleData) => {
     const formattedData = [];
 
     scheduleData.Lessons.forEach((lesson) => {
-        const { Day, Number, FirstSubject, SecondSubject, FirstLessonType, SecondLessonType, FirstClassRoom, SecondClassRoom } = lesson;
+        const { Id, Day, Number, FirstSubject, SecondSubject, FirstLessonType, SecondLessonType, FirstClassRoom, SecondClassRoom, FirstLessonLink, SecondLessonLink } = lesson;
 
         if (!formattedData[Day]) {
             formattedData[Day] = [];
         }
 
         formattedData[Day][Number - 1] = {
+            Id: Id * 8,
             FirstSubject: FirstSubject,
             SecondSubject: SecondSubject,
             FirstLessonType: FirstLessonType,
             SecondLessonType: SecondLessonType,
             FirstClassRoom: FirstClassRoom,
             SecondClassRoom: SecondClassRoom,
+            FirstLessonLink: FirstLessonLink,
+            SecondLessonLink: SecondLessonLink,
         };
     });
 

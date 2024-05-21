@@ -8,10 +8,10 @@ namespace SheldureUnit.Server.Data
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required, StringLength(256)]
+        [Required, MaxLength(256)]
         public string Login { get; set; }
         
-        [Required, StringLength(256)]
+        [Required, MaxLength(256)]
         public string Password { get; set; }
 
     }

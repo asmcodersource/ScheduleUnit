@@ -49,6 +49,7 @@ namespace SheldureUnit.Server.Middlewares
             }
             else
             {
+                db.Users.Where((x) => x.Id == 1);
                 var query = from u in db.Users
                             where u.Login == username && u.Password == password
                             select u;

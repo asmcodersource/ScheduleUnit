@@ -39,7 +39,7 @@ async function submitClickedHandler(e) {
     });
     if (response.ok === true) {
         const data = await response.json();
-        sessionStorage.setItem('token', data.access_token);
+        sessionStorage.setItem('token', data.access_token); 
         window.location.href = '/admin';
     }
 }
